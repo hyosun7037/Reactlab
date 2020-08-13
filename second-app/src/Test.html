@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+  </head>
+  <body>
+    <script>
+      // 배열의 중간요소 추가
+      // const a = [1, 2, 3];
+      // console.log(1, a);
+      // const b = a.slice(0, 2); // 시작인덱스 0
+      // const b = [...a.slice(0, 2), 4, ...a.slice(2, 3)];
+      // console.log(2, b);
+
+      // const a = [1, 2, 3];
+      // const b = [3, 4, 5];
+      // console.log(a); // [1,2,3]
+      // console.log(...a); // 1 2 3
+
+      // 스프레드 연산자 = 배열 결합
+      // const c = { ...a }; // {0: 1, 1: 2, 2: 3}
+      // const c2 = [...a, ...b]; // [1, 2, 3, 3, 4, 5]
+      // console.log(c);
+      // console.log(c2);
+
+      // const b = a.slice(0, 2).concat(4, a.slice(2, 3));
+      // console.log(b);
+
+      // 스프레드 연산자 = 오브젝트 결합
+      // const a = { id: 1, name: "홍길동" };
+      // const b = { ...a, id: 2, name: "임꺽정" }; // 깊은 복사
+      // console.log(b);
+
+      // 스프레드 연산자 = 오브젝트 결합
+      // const a = { a: 1, b: 2, c: 3, d: 4 };
+      // const b = { d: 100, e: 101, f: 102 };
+      // const c = { ...a, ...b }; // 중복되는 부분은 덮어씌우기
+      // console.log(c);
+
+      // const names = ["홍길동", "장보고", "임꺽정"];
+      // const i = names[1].indexOf("길동");
+      // console.log(i); // 시작값을 찾음 1
+
+      // const filterNames = names.filter((name) => name.indexOf("보") != -1);
+      // console.log(filterNames);
+
+      const user = [
+        {
+          id: 1,
+          name: "홍길동",
+          phone: "222",
+        },
+        {
+          id: 2,
+          name: "장보고",
+          phone: "333",
+        },
+        {
+          id: 3,
+          name: "임꺽정",
+          phone: "444",
+        },
+      ];
+
+      const reqUser = { id: 4, name: "딸기" }; // 변경할 값
+
+      const newUsers = user.map((user) =>
+        user.id === 2 ? { ...user, ...reqUser } : user
+      );
+
+      console.log(newUsers);
+    </script>
+  </body>
+</html>

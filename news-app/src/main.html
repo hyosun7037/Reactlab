@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/4.0.1/redux.js"></script>
+    <title>리듀서 사용하기</title>
+    <style>
+      body {
+        font-size: 20px;
+        position: relative;
+        left: 50%;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="subject"></div>
+    <div id="toc"></div>
+    <div id="control"></div>
+    <div id="content"></div>
+    <script>
+      function subject() {
+        document.querySelector("#subject").innerHTML = `
+            <header>
+            <h1>WEB</h1>
+            Hello, WEB!
+            </header>
+              `;
+      }
+
+      function toc() {
+        var state = store.getState();
+        var i = 0;
+        var liTags = "";
+        while (i < state.contents.length) {
+          liTags =
+            liTags +
+            `
+            <li>
+                <a onclick="
+                event.preventDefault();
+                var action= {type:'SELECT', id:${state.contents[i].id}}
+               store.dispatch(action);
+              " href="${state.contents[i].id}">
+              ${state.contents[i].title}
+              </a>
+            </li>
+             `;
+          i = i + 1;
+        }
+        document.querySelector("#toc").innerHTML = `
+              <nav>
+                <ol>
+                    ${liTags}
+                </ol>
+                </nav>
+              `;
+      }
+
+      function control() {
+        document.querySelector("#control").innerHTML = `
+            <ul> 
+                <li><a href="/create">create</a></li>
+                <li><input type="button" value="delete"></li>
+            </ul>
+              `;
+      }
+
+      function article() {
+        var state = store.getState();
+        var i = 0;
+        var aTitle, aDesc;
+        while (i < state.contents.length) {
+          if (state.contents[i].id === state.selected_id) {
+            aTitle = state.contents[i].title;
+            aDesc = state.contents[i].desc;
+            break;
+          }
+          i = i + 1;
+        }
+        document.querySelector("#content").innerHTML = `
+              <article>
+                <h2>${aTitle}</h2>
+                ${aDesc}
+                </article>
+              `;
+      }
+
+      function reducer(state, action) {
+        // 이전 state값
+        if (state === undefined) {
+          console.log(state, action);
+          return {
+            selected_id: 1,
+            contents: [
+              { id: 1, title: "HTML", desc: "HTML is.." },
+              { id: 2, title: "CSS", desc: "CSS is.." },
+            ],
+          };
+        }
+        var newState; // 빈 객체, state를 리턴할 때는 복제된 것을 리턴해야함
+        if (action.type === "SELECT") {
+          newState = Object.assign({}, state, { selected_id: action.id });
+          // state의 property값이 빈 객체에 복제되고, 마지막 값이 덮어씌워져서 리턴됨
+        }
+        console.log(state, action, newState);
+        return newState;
+      }
+
+      const store = Redux.createStore(reducer); // 잔역으로 store 생성, reducer 주입
+      store.subscribe(article); // action을 통해서 dispatch에게 전달하고 dispatch가 subscribe하고 있는 그 함수들을 호출해줌
+      subject();
+      toc();
+      control();
+      article();
+    </script>
+  </body>
+</html>
